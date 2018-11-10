@@ -1,0 +1,369 @@
+*{
+    cursor:default;
+}
+body {
+    background-color: #eee;
+    overflow:hidden;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+}
+
+.box1 {
+    border-radius: 5px;
+    width: 300px;
+    height: 650px;
+    cursor: move;
+    position: absolute;
+    top: 30px;
+    right: 330px;
+    border: 1px solid #CCCCCC;
+    -webkit-box-shadow: 10px 10px 25px #ccc;
+    -moz-box-shadow: 10px 10px 25px #ccc;
+    box-shadow: 10px 10px 25px #ccc;
+    box-sizing: border-box;
+}
+.box2 {
+    display: none;
+    border-radius: 5px;
+    width: 800px;
+    height: 480px;
+    cursor: move;
+    position: absolute;
+    top: 30px;
+    left: 250px;
+    border: 1px solid #CCCCCC;
+    -webkit-box-shadow: 10px 10px 25px #ccc;
+    -moz-box-shadow: 10px 10px 25px #ccc;
+    box-shadow: 10px 10px 25px #ccc;
+    box-sizing: border-box;
+}
+.top_common1{
+    width: 800px;
+    height:50px;
+    background: linear-gradient(to right,#FE9605 10%,#FE3166 60%);
+}
+::-webkit-input-placeholder{/*Webkit browsers*/
+    color:rgba(255,255,255,0.7);
+    font-size:12px;
+}
+:-moz-placeholder{/*Mozilla Firefox 4 to 8*/
+    color:rgba(255,255,255,0.5);
+    font-size:12px;
+}
+:-ms-input-placeholder{/*Internet Explorer 10+*/
+    color:rgba(255,255,255,0.5);
+    font-size:12px;
+}
+.all_top{
+    border-bottom: 1px solid gainsboro;
+    background: linear-gradient(to right,#FE9605 10%,#FE3166 60%);
+}
+.top1{
+    width: 100%;
+    height:115px;
+    padding: 10px;
+    box-sizing: border-box;
+    border-bottom: 1px solid #FE8911;
+}
+.top1 .my_nav li{
+    float: right;
+    margin-left: 10px;
+}
+.my_nav .my_func{
+    color: white !important;
+    font-size: 18px;
+}
+.inner-top{
+    margin-top: 20px;
+}
+.inner-top .head_img{
+    float: left;
+}
+.inner-top .person_msg{
+    float: right;
+    width: 200px;
+}
+.inner-top .head_img img{
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+}
+
+.inner-top .person_msg{
+    margin-top: 10px;
+    padding-left: 10px;
+    box-sizing: border-box;
+}
+.person_msg .user_name{
+    color: white;
+    font: bolder 18px '宋体';
+
+}
+
+.inner-top .person_msg .qm_text{
+    width: 150px;
+    margin-top: 5px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: white;
+    font-size: 13px;
+}
+.my_search{
+   width: 100%;
+    height: 30px;
+    background: linear-gradient(to right,#FE9605 10%,#FE3166 60%);
+    border: none;
+}
+.my_tab{
+    font-size: 22px;
+}
+.all_bottom{
+    height: 80%;
+    background: #FFDDC7;
+}
+.my_layui_tab{
+    margin: 0px;
+    padding: 0px;
+    height: 90%;
+}
+.laui_tab{
+    border-bottom: 1px solid #d9d9d9;
+}
+.all_bottom .my_tab_show{
+    overflow-x: hidden;
+    height: 100%;
+    overflow-y: auto;
+}
+.all_bottom .my_tab_show_head{
+    height: 100%;
+    padding: 0px;
+}
+.my_tab_show_head:hover  ::-webkit-scrollbar-thumb{
+    display: block;
+}
+.detail_friend li:hover{
+    background: gainsboro;
+}
+.group_name{
+    width: 200px !important;
+}
+.show_null{
+    width: 40%;
+    margin: 50% 28% 28% 30%;
+    height: 100px;
+}
+.show_null > i{
+    margin: 0 25px;
+    text-align: center;
+    font-size: 50px;
+    color: firebrick;
+    font-weight: bolder;
+    line-height: 50px;
+}
+.show_null>p{
+    font: bolder 16px/50px "微软雅黑";
+    color: firebrick;
+}
+.add_friend_msg{
+    margin: 12px 10px;
+    width: 200px;
+    height: 85px;
+    border: 2px solid rgb(254, 104, 48);
+    padding: 10px;
+    border-radius: 10px;
+}
+.add_friend_msg  .friend_name{
+    margin-top: 0px !important;
+    color: black;
+    font-weight: 600;
+}
+.add_friend_msg img{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+.add_friend_msg .small_tip{
+    float: right;
+    width: 130px;
+}
+.friend_desc{
+    overflow: hidden;
+    width: 130px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: darkgray;
+    margin: 3px 0px 7px;
+}
+.add_friend_span{
+    padding: 4px;
+    color: white;
+    border-radius: 5px;
+    background: rgb(254, 104, 48);
+}
+.add_friend_span:hover{
+    background: rgba(254, 104, 48,0.8);
+}
+.layui-layer-my-rim{
+    border: 6px solid rgb(222, 220, 220);
+    border-radius: 5px;
+    box-shadow: none;
+}
+.no_read{
+    font-size: 10px;
+    width: 60px;
+    height: 26px;
+    background: linear-gradient(to right,#FE9605 10%,#FE3166 60%);
+    color: white;
+    border-radius: 7px;
+    padding: 3px;
+    margin-left: 100px;
+}
+.refresh_chat{
+    color: #FE3166;
+    font-size: 13px;
+    margin: 0px 0 0 35%;
+    display: none;
+}
+.my_refresh{
+    display: inline-block;
+    -webkit-transition-property: -webkit-transform;
+    -webkit-transition-duration: 1s;
+    -moz-transition-property: -moz-transform;
+    -moz-transition-duration: 1s;
+    -webkit-animation: rotate 3s linear infinite;
+    -moz-animation: rotate 3s linear infinite;
+    -o-animation: rotate 3s linear infinite;
+    animation: rotate 3s linear infinite;
+}
+@-webkit-keyframes rotate{from{-webkit-transform: rotate(0deg)}
+    to{-webkit-transform: rotate(360deg)}
+}
+@-moz-keyframes rotate{from{-moz-transform: rotate(0deg)}
+    to{-moz-transform: rotate(359deg)}
+}
+@-o-keyframes rotate{from{-o-transform: rotate(0deg)}
+    to{-o-transform: rotate(359deg)}
+}
+@keyframes rotate{from{transform: rotate(0deg)}
+    to{transform: rotate(359deg)}
+}
+.agree_friend_msg{
+    margin: 16px 47px;
+    width: 232px;
+    height: 60px;
+    border: 4px solid rgb(192, 18, 64);
+    padding: 18px 42px 42px 42px;
+    border-radius: 10px;
+}
+.agree_friend_msg img {
+    width: 95px;
+    height: 95px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+.agree_friend_msg .friend_name {
+    margin-top: 0px !important;
+    color: black;
+    font-weight: 600;
+    font-size: 18px;
+}
+.agree_friend_msg .friend_desc {
+    overflow: hidden;
+    width: 130px;
+    font-size: 15px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: darkgray;
+    margin: 3px 0px 7px;
+}
+.wait_friend_span {
+    padding: 7px;
+    color: white;
+    border-radius: 5px;
+    background: rgb(229, 19, 74);
+}
+.agree_friend_msg .small_tip{
+    float: right;
+    width: 130px;
+}
+.refuse_agree{
+    margin-left: 5px;
+    padding: 7px;
+    color: white;
+    border-radius: 5px;
+    background: rgb(19, 152, 229);
+}
+.frame_title{
+    font:bold 18px "微软雅黑";
+    margin: 7px 100px;
+}
+.new_group{
+    margin: 18px 0px 0px -35px;
+    border-radius: 5px;
+    border: 2px solid #009688;
+    width: 215px;
+    height: 33px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+.add_group{
+    margin: 17px 0px 0px -10px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 8px;
+}
+.select_area{
+    margin: 0px 75px;
+}
+.add_tobtn{
+    margin: -55px 0px -4px 300px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 8px;
+}
+select{
+    width: 215px;
+    height: 30px;
+    color: white;
+    background: #009688;
+    font: 500 15px/30px "微软雅黑";
+    border-radius: 5px;
+    border: 2px solid #009688;
+}
+.my_qm_text{
+    color: #FE8911!important;
+}
+.gray_div{
+    display: none;
+    width: 100%;
+    height: 100%;
+    background: #a2a2a2cc;
+    position: absolute;
+    z-index: 100000;
+}
+html,body{
+    width: 100%;
+    height: 100%;
+}
+.my-container{
+    position: relative;
+    z-index: 1000000;
+}
+.operate_button{
+    width: 87%;
+}
+button.layui-btn.layui-btn-radius.use_btn {
+    margin: 15px 52px 0px 41px;
+}
+.my_nav img{
+    width: 20px;
+}
+.my_nav li:last-child span {
+    color: #fffef6;
+    margin-right: -8px;
+    font-weight: 600;
+}

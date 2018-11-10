@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录页面—南工人自己的聊天</title>
+    <script src="/js/jquery-3.1.1.min.js"></script>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="/chat/css/signin.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script>
+        $(function () {
+            //禁止后退
+            if (window.history && window.history.pushState) {
+                $(window).on('popstate', function () {
+                    window.history.pushState('forward', null, '#');
+                    window.history.forward(1);
+                });
+            }
+            window.history.pushState('forward', null, '#'); //在IE中必须得有这两行
+            window.history.forward(1);
+        })
+    </script>
+</head>
+<body>
+<div class="container myLoginUI">
+    <div class="signin">
+        <div class="signin-head"><img src="/chat/img/nyist.jpg" alt="" width="100px" height="100px" class="img-circle"></div>
+        <span class="error">${error!''}</span>
+        <form action="/login" class="form-signin" role="form" method="post">
+            <input type="text" class="form-control" name="username" placeholder="用户名" required autofocus />
+            <input type="password" class="form-control" name="password" placeholder="密码" required />
+            <button class="btn btn-lg btn-warning btn-block" type="submit">登录</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

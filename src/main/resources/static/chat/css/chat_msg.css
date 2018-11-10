@@ -1,0 +1,75 @@
+.chat_msg{
+    width: 100%;
+    padding: 0px;
+    margin: 0px;
+
+}
+.chat_msg li{
+    height: 45px;
+    margin-bottom: 5px;
+    padding: 10px;
+}
+
+::-webkit-scrollbar
+{
+    z-index: 10;
+    position: relative;
+    width: 6px;
+    background-color: #F5F5F5;
+}
+
+/*定义滚动条轨道 内阴影+圆角*/
+::-webkit-scrollbar-track
+{
+    /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);*/
+    background-color: #FFDDC7;
+}
+
+/*定义滑块 内阴影+圆角*/
+::-webkit-scrollbar-thumb
+{
+    display: none;
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background: linear-gradient(to right,#FE9605 10%,#FE3166 60%);
+}
+.chat_msg li{
+    width: 95%;
+}
+.chat_msg li img{
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+}
+.chat_msg .img_area{
+    height: 100%;
+}
+.sender_area{
+    width: 80%;
+    margin-left: 0px;
+    float: right;
+}
+.sender_area .sender_name{
+    font: 14px '微软雅黑';
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 70px;
+    display: inline-block;
+}
+.sender_area  .sender_msg{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 180px;
+    color:#7c7878;
+    font: 12px "微软雅黑";
+}
+.sender_time{
+    color:#7c7878;
+    font: 12px "微软雅黑";
+    float: right;
+}
+.my_tab_show_head .my_tab_show li:hover{
+    background: gainsboro;
+}

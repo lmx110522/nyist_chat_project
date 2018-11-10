@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>聊天—南工人自己的聊天</title>
+    <script src="/js/jquery-3.1.1.min.js"></script>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <script src="/layui/layui.js"></script>
+    <script type="text/javascript" src="/chat/js/drop.js"></script>
+    <script type="text/javascript" src="/chat/js/main.js"></script>
+    <script type="text/javascript" src="/chat/js/other.js"></script>
+    <script type="text/javascript" src="/js/cropbox.js"></script>
+    <link rel="stylesheet" href="/chat/css/main.css">
+    <link rel="stylesheet" href="/chat/css/chat_msg.css">
+    <link rel="stylesheet" href="/chat/css/chat_view.css">
+    <link rel="stylesheet" href="/chat/css/style.css">
+    <script>
+        layui.use(['element','layer'], function(){
+            var $ = layui.jquery
+                ,element = layui.element //Tab的切换功能，切换事件监听等，需要依赖element模块
+                ,layer = layui.layer;
+            //触发事件
+            var active = {
+                tabAdd: function(){
+                    //新增一个Tab项
+                    element.tabAdd('demo', {
+                        title: '新选项'+ (Math.random()*1000|0) //用于演示
+                        ,content: '内容'+ (Math.random()*1000|0)
+                        ,id: new Date().getTime() //实际使用一般是规定好的id，这里以时间戳模拟下
+                    })
+                }
+                ,tabDelete: function(othis){
+                    //删除指定Tab项
+                    element.tabDelete('demo', '44'); //删除：“商品管理”
+
+
+                    othis.addClass('layui-btn-disabled');
+                }
+                ,tabChange: function(){
+                    //切换到指定Tab项
+                    element.tabChange('demo', '22'); //切换到：用户管理
+                }
+            };
+
+            $('.site-demo-active').on('click', function(){
+                var othis = $(this), type = othis.data('type');
+                active[type] ? active[type].call(this, othis) : '';
+            });
+
+            //Hash地址的定位
+            var layid = location.hash.replace(/^#test=/, '');
+            element.tabChange('test', layid);
+
+            element.on('tab(test)', function(elem){
+                location.hash = 'test='+ $(this).attr('lay-id');
+            });
+
+        });
+        $(function () {
+            $('.chat_content').scrollTop( $('.chat_content')[0].scrollHeight);
+            $(".send_content").focus()
+            $(".my_close").click(function () {
+                layer.confirm('你确定要退出登录？', {
+                    btn: ['确定','取消'] //按钮
+                }, function(){
+                    window.location.href="/logout"
+                }, function(){
+
+                });
+            });
+            $(".addFriend").click(function () {
+                layer.prompt({title:'请输入对方名字，并查找'},function(pass, index){
+                    if(pass.trim().length > 0){
+                        $.getJSON("/getUserByName","username="+pass.trim(),function (result) {
+                            if(result.status!=200){
+                                layer.alert(result.msg);
+                            }else {
+                                console.log(result)
+                                layer.open({
+                                    type: 1,
+                                    skin: 'layui-layer-my-rim', //加上边框
+                                    area: ['420px', '240px'], //宽高
+                                    content: '<div class="add_friend_msg">\n' +
+                                    '    <img src="'+result.data.headImg+'">\n' +
+                                    '    <div class="small_tip">\n' +
+                                    '        <span class="friend_name">'+result.data.username+'</span>\n' +
+                                    '        <p class="friend_desc">'+result.data.myDesc+'</p>\n' +
+                                    '        <span oid="'+result.data.id+'" class="add_friend_span"><span class="layui-icon layui-icon-add-circle-fine"></span> 添加好友</span>\n' +
+                                    '    </div>\n' +
+                                    '</div>'
+                                });
+                            }
+                        })
+                    }
+                    else{
+                        layer.alert('请输入后再查询！')
+                    }
+                });
+            });
+            $(".chat_msg li").click(function () {
+                $(this).css("background","gainsboro").siblings().css("background","");
+            })
+            $(".chat_msg li").dblclick(function () {
+
+            })
+            $(".send_content").on("input propertychange", function () {
+                var $this = $(this),
+                    _val = $this.val(),
+                    count = "";
+                if (_val.length > 200) {
+                    layer.alert("超过最大输入长度200！");
+                    $this.val(_val.substring(0, 200));
+                }
+            });
+            var websocket = null;
+            var cahtNum = $('.chat-num').text();
+            if ('WebSocket' in window) {
+                websocket = new WebSocket('ws://localhost/webSocket');
+
+            } else {
+                alert('该浏览器不支持websocket');
+            }
+
+            websocket.onopen = function (event) {
+                console.log('websocket建立连接');
+            }
+
+            websocket.onclose = function (event) {
+                console.log('websocket关闭连接');
+            }
+
+            websocket.onmessage = function (event) {
+                console.log(event)
+                var result = $.parseJSON(event.data);
+                var flag = 0;
+                if (result.type == 3 ) {
+                    var uid = $(".no_use_uid").text();
+                    if(result.from == uid){
+                        flag = 1;
+                        msg_type="my_msg"
+                    }
+                    else{
+                        if(result.to == uid){
+                            layer.msg('你有新的消息', {
+                                offset: 't',
+                                anim: 6
+                            });
+                            flag = 1;
+                            msg_type="other_msg"
+                        }
+                    }
+                    if(flag == 1){
+                       var message = JSON.parse(result.message)['message'];
+                       var my_oid = JSON.parse(result.message)['to'];
+                       var my_fid = JSON.parse(result.message)['from'];
+                       console.log(my_fid);
+                       console.log(my_oid);
+                       console.log(message);
+                       console.log("result:以下:::")
+                       console.log(result)
+                        var html = "<li class=\""+msg_type+"\">\n" +
+                            "                        <img src=\" "+result.head_img+"\">\n" +
+                            "                        <div class=\"chat_detail\">\n" +
+                            "                            <span>"+result.username+"</span><span>"+result.date+"</span>\n" +
+                            "                            <p class=\"detail_msg\">\n" +
+                            "                               "+message+"\n" +
+                            "                            </p>\n" +
+                            "                        </div>\n" +
+                            "                    </li>"
+                        $(".chat_content ul").append(html);
+                        $(".chat_msg li").each(function () {
+                            if($(this).attr('oid') == my_oid || $(this).attr('oid') == my_fid){
+                                flag = -1;
+                                $(this).find('.sender_msg').attr('title',message).text(message);
+                                $(this).find('.sender_time').text(result.date);
+                                $(".chat_msg").prepend($(this));
+                                if($(this).attr('oid') == my_fid && $(this).find('.no_read').length == 0){
+                                    $(this).find('.sender_name').after("<span class='no_read'>未读消息</span>");
+                                    $('#chatAudio')[0].play(); //播放声音
+                                }
+                            }
+                        })
+                        if(flag != -1){
+                            var uid = $(".no_use_uid").text();
+                            $(".chat_msg").children("li").removeClass("check_li");
+                            if(parseInt(uid) == parseInt(my_oid)){
+                                $(".chat_msg").prepend("<li oid='"+my_fid+"' class='check_li'><a href='javascript:;'><img src='"+result.toUser["headImg"]+"'><div class=\"sender_area\"><span title=\""+result.toUser["username"]+"\" class=\"sender_name\">"+result.toUser["username"]+"</span><span class='no_read'>未读消息</span><p class=\"sender_msg\" title=\""+message+"\">"+message+"</p><span class=\"sender_time\">"+result.date+"</span>" +
+                                    "</div></a></li>")
+                            }
+                            else{
+                                $(".chat_msg").prepend("<li oid='"+my_oid+"' class='check_li'><a href='javascript:;'><img src='"+result.toUser["headImg"]+"'><div class=\"sender_area\"><span title=\""+result.fromUser["username"]+"\" class=\"sender_name\">"+result.fromUser["username"]+"</span><p class=\"sender_msg\" title=\""+message+"\">"+message+"</p><span class=\"sender_time\">"+result.date+"</span>" +
+                                    "</div></a></li>")
+                            }
+                        }
+                    }
+
+                    $('.chat_content').scrollTop( $('.chat_content')[0].scrollHeight+250);
+                }
+                else {
+                    $('.chat-num').text(result.userNum);
+                }
+
+            }
+
+            websocket.onerror = function (event) {
+                layui.error('websocket通信发生错误');
+
+            }
+
+            window.onbeforeunload = function (event) {
+                websocket.close();
+            }
+
+            $('.send_btn').click(function () {
+                var message = $('.send_content').val();
+                if (message.trim().length == 0) {
+                    $('.chat-message').val("");
+                    layer.alert('请输入要发送的消息');
+                    $(".send_content").focus();
+
+                }
+                else{
+                    var uid =  $(".no_use_uid").text();
+                    var oid = $(".main_send_name").children('a').attr('oid');
+                    message = message.trim();
+                    sendmessage(message,uid,oid);
+                    $('.chat-message').val("");
+                    $(".send_content").focus();
+                    return ;
+                }
+
+            })
+
+            function sendmessage(message,uid,oid) {
+                var message = {
+                    "message":message,
+                    "from":uid,
+                    "to":oid
+                };
+                websocket.send(JSON.stringify(message));
+                $('.send_content').val("");
+            }
+        })
+
+    </script>
+    
+    <style type="text/css">
+
+    </style>
+</head>
+<body>
+<span class="no_use_uid" style="display: none;">${user.id}</span>
+<div class="box box1">
+    <div class="all_top top_common">
+        <div class="top1">
+            <ul class="my_nav">
+                <li><a href="javascript:;" class="my_close"><i title="退出登录" class="layui-icon layui-icon-close my_func"></i></a></li>
+                <li><a href="javascript:;" class="addFriend"><i title="添加好友" class="layui-icon layui-icon-add-1 my_func"></i></a></li>
+                <li><a href="javascript:;" class="wait_agree11"><i title="待同意新朋友" class="layui-icon wait_agree layui-icon-username my_func"></i></a></li>
+                <li><a href="javascript:;" class="wait_agree11"><span><img src="/favicon.ico">南阳理工学院聊天网页版</span></a></li>
+            </ul>
+            <div class="inner-top">
+                <div class="head_img" title="更改头像"><img src="${user.headImg!''}"></div>
+                <div class="person_msg">
+                    <span class="user_name">${user.username!''}</span>
+                    <p class="qm_text" title="${user.myDesc!''}">${user.myDesc!'这个人很懒，没有留下签名~'}</p>
+                </div>
+            </div>
+
+        </div>
+       <input type="search" name="title" required  lay-verify="required" placeholder="搜索" autocomplete="off" class="layui-input my_search">
+    </div>
+    <div class="all_bottom">
+        <div class="layui-tab layui-tab-brief my_layui_tab" lay-filter="docDemoTabBrief">
+            <ul class="layui-tab-title laui_tab">
+                <li><i class="layui-icon layui-icon-reply-fill my_tab chat_record"></i></li>
+                <li class="layui-this"><i class="layui-icon layui-icon-friends my_tab"></i></li>
+                <li><i class="layui-icon layui-icon-group my_tab"></i></li>
+            </ul>
+            <div class="layui-tab-content my_tab_show_head">
+                <div class="layui-tab-item  my_tab_show">
+                    <ul class="chat_msg">
+                        <div class="show_null">
+                            <i class="layui-icon layui-icon-loading"></i>
+                            <p>加载中,请稍后</p>
+                        </div>
+                    </ul>
+                </div>
+                <div class="layui-tab-item layui-show friendList_layui">
+                    <ul class="friendList">
+                        <#list customFriends as customFriend>
+                            <li class="all_person">
+                                <div class="big_cate"><span class="layui-icon  my_icon_right layui-icon-right"></span>${customFriend.tgroup.gname}(${customFriend.userList?size})</div>
+                                <ul class="detail_friend">
+                                    <#list (customFriend.userList) as user_friend>
+                                        <li class="one_person" oid="${user_friend.id}">
+                                            <img src="${user_friend.headImg}">
+                                            <span title="${user_friend.username}" class="friend_name">${user_friend.username}</span>
+                                            <span class="layui-icon layui-icon-form"></span>
+                                            <span title="${user_friend.myDesc}">${user_friend.myDesc}</span>
+                                        </li>
+                                    </#list>
+
+                                </ul>
+                            </li>
+                        </#list>
+
+                    </ul>
+                </div>
+                <div class="layui-tab-item team_layui">
+                    <ul class="team_chat">
+                        <li>
+                            <a href="javascript:;">
+                                <img src="https://pic.qqtn.com/up/2017-12/15132214488446363.jpg">
+                                <span class="friend_name group_name" title="GIS工作室">GIS工作室</span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="box2">
+    <div class="top_common1">
+        <ul class="view_func">
+            <li title="关闭窗口"><a href="javascript:;"><i class="layui-icon layui-icon-close-fill close_all_frame"></i></a></li>
+        </ul>
+        <span class="main_send_name"><a href="javascript:;" title="李沫熙" style="color: white">李沫熙</a></span>
+    </div>
+    <div class="chat_view">
+        <ul class="layui-nav layui-nav-tree chat_list" lay-filter="test">
+        </ul>
+        <div class="view_right">
+           <a href="javascript:;" class="refresh_chat"><span class="layui-icon layui-icon-loading my_message_icon my_refresh"></span><span>点我加载更多历史消息</span></a>
+           <div class="chat_content">
+                <ul class="message_frame">
+                </ul>
+           </div>
+           <textarea placeholder="最多输入200字" class="send_content"></textarea>
+            <button class="layui-btn layui-btn-sm layui-btn-danger send_btn1 send_btn">发送</button>
+            <button class="layui-btn layui-btn-sm layui-btn-info send_btn1 close_one">关闭</button>
+        </div>
+    </div>
+</div>
+<div class="gray_div">
+    <div class="container my-container">
+        <div class="imageBox">
+            <div class="thumbBox"></div>
+            <div class="spinner" style="display: none">请选择照片</div>
+        </div>
+        <div class="action">
+            <div class="new-contentarea tc">
+                <a href="javascript:void(0)" class="upload-img">
+                    <label for="upload-file">选择照片</label>
+                </a>
+                <input type="file" class="" name="upload-file" id="upload-file" />
+            </div>
+            <input type="button" id="btnCrop"  class="Btnsty_peyton" value="裁切">
+            <input type="button" id="btnZoomIn" class="Btnsty_peyton" value="+"  >
+            <input type="button" id="btnZoomOut" class="Btnsty_peyton" value="-" >
+        </div>
+        <div class="cropped"></div>
+        <div class="operate_button">
+            <button class="layui-btn layui-btn-radius use_btn use_btn_use">确认使用</button>
+            <button class="layui-btn layui-btn-radius layui-btn-danger use_btn use_btn_close">关闭</button>
+        </div>
+</div>
+
+
+</div>
+</body>
+</html>

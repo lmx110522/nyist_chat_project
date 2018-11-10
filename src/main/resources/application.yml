@@ -1,0 +1,18 @@
+server:
+  port: 80
+spring:
+  freemarker:
+    suffix: .html
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql:///chat
+    username: root
+    password: root
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+qiniu:
+  accessKey: BkxNm5rrA6FUO-B0UkYzmReLGUnz2Ysm7WULau5r
+  secretKey: f9t8jCyaH8rMQscb-jat7cVTsl6O7A68aOfN4qlQ
+  bucket:  lmx1105222
+  path: phxh0zvpl.bkt.clouddn.com
