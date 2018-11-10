@@ -12,7 +12,7 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
 qiniu:
-  accessKey: BkxNm5rrA6FUO-B0UkYzmReLGUnz2Ysm7WULau5r
-  secretKey: f9t8jCyaH8rMQscb-jat7cVTsl6O7A68aOfN4qlQ
-  bucket:  lmx1105222
-  path: phxh0zvpl.bkt.clouddn.com
+  accessKey: 你的七牛云accessKey
+  secretKey: 你的七牛云secretKey
+  bucket:  你的七牛云bucket
+  path: 你的七牛云path
