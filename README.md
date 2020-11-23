@@ -1,7 +1,7 @@
 #  springboot实现QQ在线聊天，大部分功能已经实现！
 
 ##  如果需要的话，去我的github空间download,有不足，希望大家指出~
-##  csdN: https://editor.csdn.net/md/?articleId=83926769
+##  csdN: https://blog.csdn.net/over110522/article/details/83926769
 **1.登录页面**
 ![登录页面](https://img-blog.csdnimg.cn/20181110095338649.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L292ZXIxMTA1MjI=,size_16,color_FFFFFF,t_70)
 **2.先来看看主界面是什么样子**
